@@ -1,0 +1,5 @@
+Starting the application you need to run node build/index or npm runstart
+
+testing the application run  npm tests
+
+the main endpoint is /api/images/?filename=image.jpg&width=w&height=h
