@@ -8,7 +8,7 @@ function resizeFun(
   h: number,
   imgName: string,
   resultImgName: string
-) {
+) : Promise<string>{
   let originalImage = 'src/original_imgs/';
   originalImage = originalImage + imgName;
   let outputImage = 'src/resized_imgs/';
@@ -16,7 +16,7 @@ function resizeFun(
   try {
     sharp(originalImage).resize(w, h).toFile(outputImage);
   } catch (e) {
-    return (e as Error).message;
+    outputImage= (e as Error).message;
   }
   return new Promise((resolve, reject) => {
     setTimeout(() => {

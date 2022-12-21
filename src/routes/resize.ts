@@ -1,11 +1,12 @@
 import express from 'express';
+import { Request,Response } from 'express';
 import resize from '../utilities/resize';
 import path from 'path';
 import fs from 'fs';
 
 const routes = express.Router();
 
-routes.get('/images', async (req, res) => {
+routes.get('/images', async (req:Request, res:Response):Promise<any> => {
   let fileName = (req.query.filename )as string;
   let fileWidth =req.query.width
   let fileHeight =req.query.height

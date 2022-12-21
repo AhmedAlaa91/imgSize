@@ -15,7 +15,7 @@ function resizeFun(w, h, imgName, resultImgName) {
         (0, sharp_1.default)(originalImage).resize(w, h).toFile(outputImage);
     }
     catch (e) {
-        return e.message;
+        outputImage = e.message;
     }
     return new Promise((resolve, reject) => {
         setTimeout(() => {
