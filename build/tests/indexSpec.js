@@ -25,13 +25,13 @@ describe('Test endpoint responses', () => {
 });
 describe('Test resize image function', () => {
     it('gets the resize function', () => {
-        if (fs_1.default.existsSync("./src/resized_imgs/" + 'fjord-100-100.jpg')) {
-            fs_1.default.unlink("./src/resized_imgs/" + 'fjord-100-100.jpg', (err) => {
+        if (fs_1.default.existsSync('./src/resized_imgs/' + 'fjord-100-100.jpg')) {
+            fs_1.default.unlink('./src/resized_imgs/' + 'fjord-100-100.jpg', (err) => {
                 if (err)
                     throw err;
             });
         }
         resize_1.default.resizeFun(100, 100, 'fjord.jpg', 'fjord-100-100.jpg');
-        setTimeout(() => expect(fs_1.default.existsSync("./src/resized_imgs/" + 'fjord-100-100.jpg')).toBeTrue(), 1000);
+        setTimeout(() => expect(fs_1.default.existsSync('./src/resized_imgs/' + 'fjord-100-100.jpg')).toBeTrue(), 1000);
     });
 });

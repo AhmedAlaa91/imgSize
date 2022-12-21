@@ -18,20 +18,70 @@ const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const routes = express_1.default.Router();
 routes.get('/images', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let fileName = (req.query.filename) + '-' + (req.query.width) + '-' + (req.query.height) + '.jpg';
-    if (fs_1.default.existsSync("./src/resized_imgs/" + fileName)) {
-        console.log("The file exists");
-        res.sendFile(fileName, { root: path_1.default.join("src/resized_imgs") });
+    let fileName = (req.query.filename);
+    let fileWidth = req.query.width;
+    let fileHeight = req.query.height;
+    const originalImagepath = './src/original_imgs/' + fileName + '.jpg';
+    if (fileName === undefined) {
+        return res
+            .status(400)
+            .send('Bad request, query parameter (name) is required.');
+    }
+    if (fileWidth === undefined) {
+        return res
+            .status(400)
+            .send('Bad request, query parameter (width) is required.');
+    }
+    if (fileHeight === undefined) {
+        return res
+            .status(400)
+            .send('Bad request, query parameter (height) is required.');
+    }
+    if (fs_1.default.existsSync(originalImagepath) === false) {
+        return res
+            .status(404)
+            .send('Photo not found!');
+    }
+    if (isNaN(Number(String(req.query.width)))) {
+        return res
+            .status(400)
+            .send('Bad request, query parameter (width) should be number.');
+    }
+    if (isNaN(Number(String(req.query.height)))) {
+        return res
+            .status(400)
+            .send('Bad request, query parameter (height) should be number.');
+    }
+    if ((Number(String(req.query.height))) < 1) {
+        return res
+            .status(400)
+            .send('Bad request, query parameter (height) should be more than 0.');
+    }
+    if ((Number(String(req.query.width))) < 1) {
+        return res
+            .status(400)
+            .send('Bad request, query parameter (width) should be more than 0.');
+    }
+    fileName =
+        fileName +
+            '-' +
+            fileWidth +
+            '-' +
+            fileHeight +
+            '.jpg';
+    if (fs_1.default.existsSync('./src/resized_imgs/' + fileName)) {
+        console.log('The file exists');
+        res.sendFile(fileName, { root: path_1.default.join('src/resized_imgs') });
     }
     else {
-        console.log("The file does not exist");
+        console.log('The file does not exist');
         try {
-            const x = yield resize_1.default.resizeFun(Number(req.query.width), Number(req.query.height), (req.query.filename) + '.jpg', fileName);
+            const x = yield resize_1.default.resizeFun(Number(req.query.width), Number(req.query.height), req.query.filename + '.jpg', fileName);
             console.log(x);
-            setTimeout(() => res.sendFile(fileName, { root: path_1.default.join("src/resized_imgs") }), 1000);
+            setTimeout(() => res.sendFile(fileName, { root: path_1.default.join('src/resized_imgs') }), 1000);
         }
         catch (e) {
-            return (e.message);
+            return e.message;
         }
     }
 }));
