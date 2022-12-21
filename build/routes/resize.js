@@ -18,16 +18,17 @@ const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const routes = express_1.default.Router();
 routes.get('/images', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (fs_1.default.existsSync("./src/resized_imgs/" + (req.query.filename))) {
+    let fileName = (req.query.filename) + '-' + (req.query.width) + '-' + (req.query.height) + '.jpg';
+    if (fs_1.default.existsSync("./src/resized_imgs/" + fileName)) {
         console.log("The file exists");
-        res.sendFile((req.query.filename), { root: path_1.default.join("src/resized_imgs") });
+        res.sendFile(fileName, { root: path_1.default.join("src/resized_imgs") });
     }
     else {
         console.log("The file does not exist");
         try {
-            const x = yield resize_1.default.resizeFun(Number(req.query.width), Number(req.query.height), req.query.filename);
+            const x = yield resize_1.default.resizeFun(Number(req.query.width), Number(req.query.height), (req.query.filename) + '.jpg', fileName);
             console.log(x);
-            setTimeout(() => res.sendFile((req.query.filename), { root: path_1.default.join("src/resized_imgs") }), 1000);
+            setTimeout(() => res.sendFile(fileName, { root: path_1.default.join("src/resized_imgs") }), 1000);
         }
         catch (e) {
             return (e.message);

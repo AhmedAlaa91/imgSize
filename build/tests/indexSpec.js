@@ -15,16 +15,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("../index"));
 const resize_1 = __importDefault(require("../utilities/resize"));
 const supertest_1 = __importDefault(require("supertest"));
+const fs_1 = __importDefault(require("fs"));
 const request = (0, supertest_1.default)(index_1.default);
 describe('Test endpoint responses', () => {
     it('gets the api endpoint', () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield request.get('/api/images/?filename=fjord.jpg&width=600&height=400');
+        const response = yield request.get('/api/images/?filename=fjord&width=600&height=400');
         expect(response.statusCode).toBe(200);
     }));
 });
 describe('Test resize image function', () => {
-    it('should work', () => {
-        const resizeFunc = resize_1.default.resizeFun(100, 100, 'fjord.jpg');
-        expect('D:\\imgprocess\\src\\resized_imgs\\fjord.jpg').toContain('fjord.jpg');
+    it('gets the resize function', () => {
+        if (fs_1.default.existsSync("./src/resized_imgs/" + 'fjord-100-100.jpg')) {
+            fs_1.default.unlink("./src/resized_imgs/" + 'fjord-100-100.jpg', (err) => {
+                if (err)
+                    throw err;
+            });
+        }
+        resize_1.default.resizeFun(100, 100, 'fjord.jpg', 'fjord-100-100.jpg');
+        setTimeout(() => expect(fs_1.default.existsSync("./src/resized_imgs/" + 'fjord-100-100.jpg')).toBeTrue(), 1000);
     });
 });

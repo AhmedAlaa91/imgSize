@@ -6,11 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sharp = require('sharp');
 const express_1 = __importDefault(require("express"));
 const app = (0, express_1.default)();
-function resizeFun(w, h, imgName) {
+function resizeFun(w, h, imgName, resultImgName) {
     let originalImage = 'src/original_imgs/';
     originalImage = originalImage + imgName;
     let outputImage = 'src/resized_imgs/';
-    outputImage = outputImage + imgName;
+    outputImage = outputImage + resultImgName;
     try {
         sharp(originalImage).resize(w, h).toFile(outputImage);
     }
